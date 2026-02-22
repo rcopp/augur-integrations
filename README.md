@@ -593,7 +593,7 @@ This project can be run using Docker for easier local testing and deployment.
 ### Build image
 
 ```bash
-docker build -t augur-integration
+docker build -t augur-integrations
 ```
 
 ### Run container
@@ -603,7 +603,7 @@ docker run -p 3000:3000 \
 -e QRADAR_BASE_URL=https://qradar_url \
 -e QRADAR_SEC_TOKEN=token \
 -e WEBHOOK_SECRET=secret \
-augur-integration
+augur-integrations
 ```
 
 #### The service will be available at:
