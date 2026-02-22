@@ -37,25 +37,29 @@ function dedupe(indicators) {
 
     return fresh;
 }
+function createProcessor(connector) {
+    async function processIndicators(indicators, connector = null) {
+        if (!Array.isArray(indicators) || indicators.length === 0) {
+            logger.warn("Webhook received empty indicators");
+            return;
+        }
 
-async function processIndicators(indicators, connector = null) {
-    if (!Array.isArray(indicators) || indicators.length === 0) {
-        logger.warn("Webhook received empty indicators");
-        return;
+        const fresh = dedupe(indicators);
+
+        if (!fresh.length) {
+            logger.info("Webhook deduplicated indicators");
+            return;
+        }
+
+        await connectorInstance(connector).sendIndicators(fresh);
+
+        logger.info(`Webhook processed ${fresh.length} indicators`);
     }
 
-    const fresh = dedupe(indicators);
-
-    if (!fresh.length) {
-        logger.info("Webhook deduplicated indicators");
-        return;
-    }
-
-    await connectorInstance(connector).sendIndicators(fresh);
-
-    logger.info(`Webhook processed ${fresh.length} indicators`);
+    return { processIndicators };
 }
 
+
 module.exports = {
-    processIndicators
+    createProcessor
 };

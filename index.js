@@ -6,7 +6,7 @@ const webhookRouter = require("./src/webhook/webhookRouter");
 const firewallRouter = require("./src/services/firewall/firewallRouter");
 
 const app = express();
-const connector = new AugurQRadarConnector();
+// const connector = new AugurQRadarConnector();
 
 // Express
 app.use(express.json({

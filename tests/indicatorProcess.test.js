@@ -1,7 +1,8 @@
 const mockSendIndicators = jest.fn().mockResolvedValue(true);
 const mockConnector = { sendIndicators: mockSendIndicators };
 
-const { processIndicators } = require("../src/webhook/processors/qradarIndicatorProcessor");
+const { createProcessor } = require("../src/webhook/processors/qradarIndicatorProcessor");
+const { processIndicators } = createProcessor(mockConnector);
 
 describe("indicatorProcessor", () => {
     beforeEach(() => {

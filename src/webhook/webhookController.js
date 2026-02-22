@@ -1,7 +1,8 @@
-const { processIndicators } = require("./processors/qradarIndicatorProcessor");
 const { processFirewallIndicators } = require("./processors/firewallIndicatorProcessor");
 const { verifySignature } = require("./webhookService");
 const logger = require("../utils/logger");
+const AugurQRadarConnector = require("../services/qradar-connector/connector");
+const {createProcessor} = require("./processors/qradarIndicatorProcessor");
 
 async function handleWebhook(req, res) {
     try {
@@ -14,6 +15,8 @@ async function handleWebhook(req, res) {
         const indicators = req.body.indicators || [];
 
         // QRadar
+        const connector = new AugurQRadarConnector();
+        const { processIndicators } = createProcessor(connector);
         await processIndicators(indicators);
 
         // Firewall EDL
