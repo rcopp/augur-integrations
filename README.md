@@ -101,7 +101,7 @@ Create `.env`:
 ```
 PORT=3000
 
-QRADAR_BASE_URL=https://qradar.local
+QRADAR_BASE_URL=https://qradar_url
 QRADAR_SEC_TOKEN=your_token_here
 QRADAR_API_VERSION=12.0
 QRADAR_BATCH_SIZE=100
@@ -379,8 +379,10 @@ Service runs without QRadar if SEC token absent, but QRadar delivery disabled.
 
 To test transformations only:
 
+**`QRADAR_SEC_TOKEN=dummy`** (in .env file)
+
 ```bash
-QRADAR_SEC_TOKEN=dummy npm start
+npm start
 ```
 
 ---
@@ -583,3 +585,31 @@ Augur Security → Webhook → edlService → (EDL HTTP)
 Palo Alto Firewall (fetch)
 
 ```
+
+## Docker setup
+
+This project can be run using Docker for easier local testing and deployment.
+
+### Build image
+
+```bash
+docker build -t augur-integrations
+```
+
+### Run container
+
+```bash
+docker run -p 3000:3000 \
+-e QRADAR_BASE_URL=https://qradar_url \
+-e QRADAR_SEC_TOKEN=token \
+-e WEBHOOK_SECRET=secret \
+augur-integrations
+```
+
+#### The service will be available at:
+
+* Webhook: POST /webhook/threat-intel
+
+* Firewall EDL: GET /edl/malicious-ips
+
+* Firewall Metadata: GET /edl/metadata-ips/metadata
